@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar Miembro{% endblock %}
+
+{% block principal %}
+    <h1>Edit Miembro</h1>
+    {{ include('miembro/_form.html.twig', {'button_label': 'Update'}) }}
+{% endblock %}

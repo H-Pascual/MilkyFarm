@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Imagenes
+{% endblock %}
+
+{% block principal %}
+	<!-- Gallery Start -->
+	<div class="container-xxl py-5">
+		<div class="container">
+			<div class="text-center mx-auto pb-4 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+				<p class="section-title bg-white text-center text-primary px-3">Gallery</p>
+				<h1 class="mb-5">Explore Our Dairy Farm Gallery</h1>
+			</div>
+			<!-- Gallery Start -->
+			<div class="container-xxl py-5 px-0">
+				<div class="row g-0">
+					{% for imagen in imagenes %}
+						<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+							<div class="row g-0">
+								<div class="col-12">
+									<a class="d-block" href="{{path('app_imagen_show', {'id': imagen.id}) }}">
+										<img width="300px" height="300px" style="object-fit: cover;" class="img-responsive m-1" src="{{imagen.getUrlGaleria()}}" alt="">
+									</a>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<!-- Gallery End -->
+		</div>
+	</div>
+	<!-- Gallery End -->
+	{% if is_granted('IS_AUTHENTICATED') %}
+		<table class="table container">
+			<thead>
+				{% if(is_granted("ROLE_USER")) %}
+					<tr>
+						<th></th>
+						<th>
+							<a href="{{ path("app_imagen_index_ordenado", {ordenacion: 'id'}) }}">Id</a>
+						</th>
+						<th>
+							<a href="{{ path("app_imagen_index_ordenado", {ordenacion: 'nombre'}) }}">Nombre</a>
+						</th>
+						<th>
+							<a href="{{ path("app_imagen_index_ordenado", {ordenacion: 'descripcion'}) }}">Descripcion</a>
+						</th>
+						<th>
+							<a href="{{ path("app_imagen_index_ordenado", {ordenacion: 'categoria'}) }}">Categoria</a>
+						</th>
+						<th>NumVisualizaciones</th>
+						<th>NumLikes</th>
+						<th>NumDownloads</th>
+						<th>Fecha</th>
+						<th>Actions</th>
+					</tr>
+				{% else %}
+					<tr>
+						<th></th>
+						<th>Id</th>
+						<th>Nombre</th>
+						<th>Descripcion</th>
+						<th>Categoria</th>
+						<th>NumVisualizaciones</th>
+						<th>NumLikes</th>
+						<th>NumDownloads</th>
+						<th>Fecha</th>
+					</tr>
+				{% endif %}
+			</thead>
+			<tbody>
+				{% for imagen in imagenes %}
+					<tr>
+						<td><img src="{{ asset(imagen.geturlGaleria()) }}" alt="{{ imagen.nombre }}" width="100px"></td>
+						<td>{{ imagen.id }}</td>
+						<td>{{ imagen.nombre }}</td>
+						<td>{{ imagen.descripcion }}</td>
+						<td>{{ imagen.categoria }}</td>
+						<td>{{ imagen.numVisualizaciones }}</td>
+						<td>{{ imagen.numLikes }}</td>
+						<td>{{ imagen.numDownloads }}</td>
+						<td>{{ imagen.fecha | date('d/m/Y') }}</td>
+						<td>
+							<a class="btn btn-success" href="{{ path('app_imagen_show', {'id': imagen.id}) }}">Ver detalles</a>
+							{% if imagen.usuario.id == usuario.id or is_granted('ROLE_ADMIN') %}
+
+								<a class="btn btn-primary" href="{{ path('app_imagen_edit', {'id': imagen.id}) }}">Editar</a>
+								{{ include('imagen/_delete_form.html.twig') }}
+						{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+{% endblock %}

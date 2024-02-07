@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    	<div class="row">
+		<button class="btn btn-success m-1">{{ button_label|default('Guardar') }}</button>
+        <a class="btn btn-danger m-1" href="{{ path('app_miembro_index') }}">Volver</a>
+	</div>
+{{ form_end(form) }}

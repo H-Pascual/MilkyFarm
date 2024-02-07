@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Productos{% endblock %}
+
+{% block principal %}
+    <!-- Product Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <p class="section-title bg-white text-center text-primary px-3">Our Products</p>
+                <h1 class="mb-5">Our Dairy Products For Healthy Living</h1>
+            </div>
+            <div class="row gx-4">
+            {% for producto in productos %}
+                    <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="product-item">
+                            <div class="position-relative">
+                                <a class="d-block" href="{{ path('app_producto_show', {'id': producto.id}) }}">
+                                    <img class="img-fluid" src="{{producto.getUrlProducto()}}" alt="{{producto.getNombre()}}">
+                                </a>
+                            </div>
+                            <div class="text-center p-4">
+                                <a class="d-block h5" href="{{ path('app_producto_show', {'id': producto.id}) }}">{{producto.getNombre()}}</a>
+                                <span class="text-primary me-1">{{producto.getPrecio()}}</span>
+                                <span class="text-decoration-line-through">{{producto.getPrecioAntiguo()}}</span>
+                            </div>
+                        </div>
+                    </div>
+               {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% if is_granted('IS_AUTHENTICATED') %}
+    <table class="table m-1">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Imagen</th>
+                <th>Precio</th>
+                <th>PrecioAntiguo</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for producto in productos %}
+            <tr>
+                <td>{{ producto.id }}</td>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.imagen }}</td>
+                <td>{{ producto.precio }}</td>
+                <td>{{ producto.precioAntiguo }}</td>
+                <td>
+                <a class="btn btn-success" href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver Detalles</a>
+                {% if is_granted('ROLE_USER') %}
+                    {% if producto.usuario.id == usuario.id or is_granted('ROLE_ADMIN') %}
+                    <a class="btn btn-primary" href="{{ path('app_producto_edit', {'id': producto.id}) }}">Editar</a>
+                    {{ include('producto/_delete_form.html.twig') }}
+                    {% endif %}
+                {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+{% endblock %}

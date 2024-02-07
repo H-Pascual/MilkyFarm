@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5">
+	<a href={{ path('sym_index') }} class="navbar-brand d-flex align-items-center">
+		<h1 class="m-0">Milky</h1>
+	</a>
+	<button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarCollapse">
+		<div class="navbar-nav ms-auto p-4 p-lg-0">
+			<a href={{ path('sym_index') }} {% if app.request.pathinfo=='/' %} class="nav-item nav-link active" {% else %} class="nav-item nav-link" {% endif %}>Home</a>
+			<a href={{ path('app_miembro_index') }} {% if app.request.pathinfo=='/miembro/' %} class="nav-item nav-link active" {% else %} class="nav-item nav-link" {% endif %}>Our Team</a>
+			<a href={{ path('app_producto_index') }} {% if app.request.pathinfo=='/producto/' %} class="nav-item nav-link active" {% else %} class="nav-item nav-link" {% endif %}>Products</a>
+			<a href={{ path('app_imagen_index') }} {% if app.request.pathinfo=='/imagen/' %} class="nav-item nav-link active" {% else %} class="nav-item nav-link" {% endif %}>Gallery</a>
+			<a href={{ path('sym_contact') }} {% if app.request.pathinfo=='/contact' %} class="nav-item nav-link active" {% else %} class="nav-item nav-link" {% endif %}>Contact</a>
+			{% if is_granted('IS_AUTHENTICATED') %}
+				<div class="nav-item dropdown">
+					<a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle">User</a>
+					<div class="dropdown-menu bg-light m-0">
+						<a href={{ path('sym_profile') }} {% if app.request.pathinfo=='/profile/' %} class="dropdown-item active" {% else %} class="dropdown-item" {% endif %}>Profile</a>
+						<a href={{ path('app_imagen_new') }} {% if app.request.pathinfo=='/addimage/' %} class="dropdown-item active" {% else %} class="dropdown-item" {% endif %}>Add Image</a>
+						<a href={{ path('app_producto_new') }} {% if app.request.pathinfo=='/addproduct/' %} class="dropdown-item active" {% else %} class="dropdown-item" {% endif %}>Add Product</a>
+					</div>
+				</div>
+			{% else %}
+				<a href={{ path('app_login') }} {% if app.request.pathinfo=='/login' %} class="nav-item nav-link active" {% else %} class="nav-item nav-link" {% endif %}>Login</a>
+				<a href={{ path('app_register') }} {% if app.request.pathinfo=='/registro' %} class="nav-item nav-link active" {% else %} class="nav-item nav-link" {% endif %}>Registro</a>
+			{% endif %}
+			{% if is_granted('ROLE_ADMIN') %}
+				<div class="nav-item dropdown">
+					<a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle">Admin</a>
+					<div class="dropdown-menu bg-light m-0">
+						<a href={{ path('app_miembro_new') }} {% if app.request.pathinfo=='/addperson/' %} class="dropdown-item active" {% else %} class="dropdown-item" {% endif %}>Add Person</a>
+						<a href={{ path('app_modify_users') }} {% if app.request.pathinfo=='/modifyusers/' %} class="dropdown-item active" {% else %} class="dropdown-item" {% endif %}>Modify Users</a>
+					</div>
+				</div>
+			</li>
+			{% endif %}
+		{% if is_granted('IS_AUTHENTICATED') %}
+			<a href={{ path('app_logout') }} class="nav-item nav-link">
+				Logout -
+				{{ app.user.nombre }}</a>
+		{% endif %}
+	</li>
+</div></div></nav>
